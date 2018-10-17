@@ -1,4 +1,4 @@
-const { mongoose } = require("../singleton");
+const { mongoose } = require("../singleton")
 
 const messagechema = new mongoose.Schema(
 	{
@@ -15,6 +15,6 @@ const messagechema = new mongoose.Schema(
 	{
 		timestamps: true
 	}
-);
+)
 
-module.exports = mongoose.model("Message", messagechema);
+module.exports = mongoose.model("Message", messagechema)

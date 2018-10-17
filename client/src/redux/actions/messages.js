@@ -1,4 +1,4 @@
-export const addNewMess = data => ({
-  type: "ADD_MESS",
-  data
-});
+export const addNewMess = (data) => ({
+	type: "ADD_MESS",
+	data
+})

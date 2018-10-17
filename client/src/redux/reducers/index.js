@@ -1,6 +1,6 @@
-import { combineReducers } from "redux";
-import messages from "./messages";
+import { combineReducers } from "redux"
+import messages from "./messages"
 
 export default combineReducers({
-  messages
-});
+	messages
+})

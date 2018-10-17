@@ -1,19 +1,19 @@
-import React, { Component } from "react";
-import { connect } from "react-redux";
-import { addNewMess } from "../redux/actions/messages";
-import SocketIO from "socket.io-client";
-const token = localStorage.getItem("token");
+import React, { Component } from "react"
+import { connect } from "react-redux"
+import { addNewMess } from "../redux/actions/messages"
+import SocketIO from "socket.io-client"
+const token = localStorage.getItem("token")
 
 class ChatRoom extends Component {
 	constructor() {
-		super();
+		super()
 		this.state = {
 			input: ""
-		};
+		}
 		this.socket = SocketIO.connect(
 			"http://localhost:4000",
 			{ query: { token } }
-		);
+		)
 	}
 
 	componentDidMount() {
@@ -22,19 +22,19 @@ class ChatRoom extends Component {
 		// });
 		// this.socket.emit("join_room", "123");
 		// this.socket.on("join_room", mess => console.log(mess));
-		this.socket.on("error", error => console.log(error));
+		this.socket.on("error", (error) => console.log(error))
 	}
 
-	handleChange = e => {
-		let value = e.target.value;
-		this.setState(prev => ({ ...prev, input: value }));
-	};
+	handleChange = (e) => {
+		let value = e.target.value
+		this.setState((prev) => ({ ...prev, input: value }))
+	}
 
-	handleSubmit = e => {
-		e.preventDefault();
-		this.socket.emit("new_message", this.state.input);
-		this.setState(prev => ({ ...prev, input: "" }));
-	};
+	handleSubmit = (e) => {
+		e.preventDefault()
+		this.socket.emit("new_message", this.state.input)
+		this.setState((prev) => ({ ...prev, input: "" }))
+	}
 
 	render() {
 		return (
@@ -51,11 +51,11 @@ class ChatRoom extends Component {
 					<p key={i}>{m}</p>
 				))}
 			</div>
-		);
+		)
 	}
 }
 
 export default connect(
 	({ messages }) => ({ messages }),
 	{ addNewMess }
-)(ChatRoom);
+)(ChatRoom)

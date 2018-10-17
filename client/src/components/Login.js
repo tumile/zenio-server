@@ -1,5 +1,5 @@
-import React, { Component } from "react";
-import "./styles/login.css";
+import React, { Component } from "react"
+import "./styles/login.css"
 
 class Login extends Component {
 	render() {
@@ -25,8 +25,8 @@ class Login extends Component {
 					</form>
 				</div>
 			</div>
-		);
+		)
 	}
 }
 
-export default Login;
+export default Login
