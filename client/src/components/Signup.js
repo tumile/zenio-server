@@ -1,10 +1,7 @@
 import React, { Component } from "react"
-import { connect } from "react-redux"
-import { authUser } from "../redux/actions/auth"
-import { removeError } from "../redux/actions/errors"
 import "./styles/login.css"
 
-class Login extends Component {
+class Signup extends Component {
 	state = {
 		name: "",
 		pass: ""
@@ -15,7 +12,7 @@ class Login extends Component {
 	}
 
 	handleToggleForm = () => {
-		this.props.history.push("/signup")
+		this.props.history.push("/login")
 	}
 
 	handleSubmit = (e) => {
@@ -28,9 +25,10 @@ class Login extends Component {
 		return (
 			<div className="form">
 				<form onSubmit={this.handleSubmit}>
+					<input type="file" placeholder="Profile picture" />
 					<input
 						name="name"
-						vlaue={name}
+						value={name}
 						type="text"
 						placeholder="Username"
 						onChange={this.handleChange}
@@ -42,11 +40,11 @@ class Login extends Component {
 						placeholder="Password"
 						onChange={this.handleChange}
 					/>
-					<button>login</button>
+					<button>create</button>
 					<p className="message">
-						Not registered?{" "}
+						Already registered?{" "}
 						<span className="link" onClick={this.handleToggleForm}>
-							<strong>Create an account</strong>
+							<strong>Sign In</strong>
 						</span>
 					</p>
 				</form>
@@ -55,7 +53,4 @@ class Login extends Component {
 	}
 }
 
-export default connect(
-	({ errors }) => ({ errors }),
-	{ authUser, removeError }
-)(Login)
+export default Signup
