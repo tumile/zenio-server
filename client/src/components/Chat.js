@@ -1,10 +1,12 @@
+import "./styles/chat.css"
 import React, { Component } from "react"
 import { connect } from "react-redux"
-import { addNewMess } from "../redux/actions/messages"
 import SocketIO from "socket.io-client"
+import Message from "./Message"
+
 const token = localStorage.getItem("token")
 
-class ChatRoom extends Component {
+class Chat extends Component {
 	constructor() {
 		super()
 		this.state = {
@@ -37,25 +39,32 @@ class ChatRoom extends Component {
 	}
 
 	render() {
+		let flag = false
 		return (
-			<div className="App">
-				<form onSubmit={this.handleSubmit}>
-					<input
-						type="text"
-						value={this.state.input}
-						onChange={this.handleChange}
+			<div className="chat">
+				<div className="chat-header">
+					<img
+						className="avatar"
+						src="https://images.pexels.com/photos/20787/pexels-photo.jpg?auto=compress&cs=tinysrgb&h=350"
 					/>
-					<input type="submit" value="Send" />
-				</form>
-				{this.props.messages.map((m, i) => (
-					<p key={i}>{m}</p>
-				))}
+					<div>
+						<div className="chat-with">Chat with Vincent Porter</div>
+						<div className="chat-num-messages">already 1 902 messages</div>
+					</div>
+				</div>
+				<div className="chat-history">
+					{[...Array(10)].map((e, i) => {
+						flag = !flag
+						return <Message key={i} fromMe={flag} />
+					})}
+				</div>
+				<div class="chat-message">
+					<textarea placeholder="Type your message" rows="3" />
+					<button>Send</button>
+				</div>
 			</div>
 		)
 	}
 }
 
-export default connect(
-	({ messages }) => ({ messages }),
-	{ addNewMess }
-)(ChatRoom)
+export default connect(({ messages }) => ({ messages }))(Chat)

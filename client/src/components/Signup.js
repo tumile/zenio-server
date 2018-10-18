@@ -40,7 +40,7 @@ class Signup extends Component {
 						placeholder="Password"
 						onChange={this.handleChange}
 					/>
-					<button>create</button>
+					<button>sign up</button>
 					<p className="message">
 						Already registered?{" "}
 						<span className="link" onClick={this.handleToggleForm}>

@@ -1,0 +1,29 @@
+.main {
+	max-width: 1000px;
+	margin: 0 auto;
+	display: flex;
+	flex-direction: row;
+	box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2), 0 5px 5px 0 rgba(0, 0, 0, 0.24);
+	border-radius: 5px;
+	background: #444753;
+}
+
+.people {
+	flex-grow: 0.4;
+	padding: 10px;
+}
+
+.search {
+	outline: 0;
+	border-radius: 3px;
+	border: none;
+	padding: 15px 10px 15px 15px;
+	color: white;
+	background: #6a6c75;
+	width: 90%;
+	font-size: 14px;
+}
+
+.chat {
+	flex-grow: 5;
+}

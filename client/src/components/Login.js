@@ -1,7 +1,6 @@
 import React, { Component } from "react"
 import { connect } from "react-redux"
 import { authUser } from "../redux/actions/auth"
-import { removeError } from "../redux/actions/errors"
 import "./styles/login.css"
 
 class Login extends Component {
@@ -26,7 +25,7 @@ class Login extends Component {
 		const { name, pass } = this.state
 
 		return (
-			<div className="form">
+			<section className="form">
 				<form onSubmit={this.handleSubmit}>
 					<input
 						name="name"
@@ -50,12 +49,12 @@ class Login extends Component {
 						</span>
 					</p>
 				</form>
-			</div>
+			</section>
 		)
 	}
 }
 
 export default connect(
 	({ errors }) => ({ errors }),
-	{ authUser, removeError }
+	{ authUser }
 )(Login)

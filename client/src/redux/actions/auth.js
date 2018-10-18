@@ -9,16 +9,16 @@ export const authUser = (type, data) => {
 	return (dispatch) => {
 		axios
 			.post(type === "login" ? "/login" : "/signup", data)
-			.then(({ token, ...user }) => {
+			.then(({token, ...user}) => {
 				dispatch({
 					type: "SET_USER",
 					user
 				})
-				dispatch({ type: "REMOVE_ERROR" })
+				dispatch({type: "REMOVE_ERROR"})
 				setAPIHeader(token)
 				localStorage.setItem("token", token)
 			})
-			.catch((error) => dispatch({ type: "ADD_ERROR", error: error.message }))
+			.catch((error) => dispatch({type: "ADD_ERROR", error: error.message}))
 	}
 }
 
