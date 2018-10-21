@@ -7,9 +7,16 @@
 	margin: 20% auto 0 auto;
 	padding: 45px;
 	text-align: center;
+	border-radius: 10px;
 	box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2), 0 5px 5px 0 rgba(0, 0, 0, 0.24);
 }
+.form .error {
+	color: #ff4500;
+	font-weight: bold;
+	margin-bottom: 20px;
+}
 .form input {
+	border-radius: 5px;
 	outline: 0;
 	background: #f2f2f2;
 	width: 100%;
@@ -19,9 +26,10 @@
 	box-sizing: border-box;
 }
 .form button {
+	border-radius: 5px;
 	text-transform: uppercase;
 	outline: 0;
-	background: #4caf50;
+	background: #48d1cc;
 	width: 100%;
 	border: 0;
 	padding: 15px;
@@ -31,11 +39,11 @@
 .form button:hover,
 .form button:active,
 .form button:focus {
-	background: #43a047;
+	background: #00ced1;
 }
-.form .message {
+.form .prompt {
 	margin: 30px 0 0;
 }
-.form .message .link {
+.form .prompt .link {
 	cursor: pointer;
 }

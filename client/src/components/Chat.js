@@ -48,7 +48,7 @@ class Chat extends Component {
 						src="https://images.pexels.com/photos/20787/pexels-photo.jpg?auto=compress&cs=tinysrgb&h=350"
 					/>
 					<div>
-						<div className="chat-with">Chat with Vincent Porter</div>
+						<div className="chat-with">Chat with Tuan Le</div>
 						<div className="chat-num-messages">already 1 902 messages</div>
 					</div>
 				</div>

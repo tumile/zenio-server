@@ -1,4 +1,4 @@
-const { express } = require("../singleton")
+const { express, jwt } = require("../singleton")
 const router = express.Router()
 const db = require("../models")
 
@@ -17,6 +17,7 @@ router.post("/login", async (req, res, next) => {
 				process.env.SECRET_KEY
 			)
 			res.status(200).json({
+				userId: _id,
 				username,
 				token
 			})
@@ -29,7 +30,7 @@ router.post("/login", async (req, res, next) => {
 	} catch (error) {
 		next({
 			status: 400,
-			message: "Email not found"
+			message: "Username not found"
 		})
 	}
 })
@@ -45,6 +46,7 @@ router.post("/signup", async (req, res, next) => {
 			process.env.SECRET_KEY
 		)
 		res.status(201).json({
+			userId: _id,
 			username,
 			token
 		})

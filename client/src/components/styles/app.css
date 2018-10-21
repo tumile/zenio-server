@@ -3,11 +3,11 @@
 body {
 	font-family: "Roboto";
 	font-size: 14px;
-	background: #a7d5ef; /* fallback for old browsers */
-	background: -webkit-linear-gradient(right, #b4d5e8, #a7d5ef);
-	background: -moz-linear-gradient(right, #b4d5e8, #a7d5ef);
-	background: -o-linear-gradient(right, #b4d5e8, #a7d5ef);
-	background: linear-gradient(to left, #b4d5e8, #a7d5ef);
+	background: #40e0d0; /* fallback for old browsers */
+	background: -webkit-linear-gradient(right, #afeeee, #40e0d0);
+	background: -moz-linear-gradient(right, #afeeee, #40e0d0);
+	background: -o-linear-gradient(right, #afeeee, #40e0d0);
+	background: linear-gradient(to left, #afeeee, #40e0d0);
 	-webkit-font-smoothing: antialiased;
 	-moz-osx-font-smoothing: grayscale;
 }

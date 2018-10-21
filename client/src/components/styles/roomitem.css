@@ -1,4 +1,4 @@
-.peopleitem {
+.roomitem {
 	height: 70px;
 	margin: 5px 0 5px 0;
 	display: flex;
@@ -24,7 +24,7 @@ p {
 	color: #92959e;
 }
 
-.peopleitem .avatar {
+.roomitem .avatar {
 	border: 3px solid #92959e;
 	border-radius: 50%;
 	width: 50px;
@@ -37,7 +37,7 @@ p {
 		display: none;
 	}
 
-	.peopleitem .avatar {
+	.roomitem .avatar {
 		justify-self: center;
 		margin: 0 auto;
 	}

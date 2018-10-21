@@ -1,9 +1,9 @@
-import "./styles/peopleitem.css"
+import "./styles/roomitem.css"
 import React from "react"
 
-export default ({ roomId, name, status, setCurrentChat }) => {
+export default ({ roomId, name, setCurrentChat }) => {
 	return (
-		<div className="peopleitem" onClick={setCurrentChat(roomId)}>
+		<div className="roomitem" onClick={setCurrentChat(roomId)}>
 			<img
 				className="avatar"
 				src="https://images.pexels.com/photos/20787/pexels-photo.jpg?auto=compress&cs=tinysrgb&h=350"

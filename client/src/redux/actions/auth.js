@@ -1,31 +1,36 @@
-import axios from "axios"
-
-export const setAPIHeader = (token) => {
-	if (token) axios.defaults.headers.common["Authorization"] = `Bearer ${token}`
-	else delete axios.defaults.headers.common["Authorization"]
-}
+import apiCall, { setAPIHeader } from "../../api"
 
 export const authUser = (type, data) => {
 	return (dispatch) => {
-		axios
-			.post(type === "login" ? "/login" : "/signup", data)
-			.then(({token, ...user}) => {
-				dispatch({
-					type: "SET_USER",
-					user
+		dispatch({ type: "REMOVE_ERROR" })
+		return new Promise((resolve, reject) => {
+			apiCall
+				.post(type === "login" ? "/auth/login" : "/auth/signup", data)
+				.then(({ data: { token, ...user } }) => {
+					console.log(user)
+					dispatch({
+						type: "SET_CURRENT_USER",
+						user
+					})
+					setAPIHeader(token)
+					localStorage.setItem("token", token)
+					resolve()
 				})
-				dispatch({type: "REMOVE_ERROR"})
-				setAPIHeader(token)
-				localStorage.setItem("token", token)
-			})
-			.catch((error) => dispatch({type: "ADD_ERROR", error: error.message}))
+				.catch((error) => {
+					dispatch({
+						type: "ADD_ERROR",
+						error: error.response.data.error.message
+					})
+					reject()
+				})
+		})
 	}
 }
 
 export const logout = () => {
 	return (dispatch) => {
 		dispatch({
-			type: "SET_USER",
+			type: "SET_CURRENT_USER",
 			user: {}
 		})
 		setAPIHeader(null)

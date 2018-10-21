@@ -1,9 +1,9 @@
 export default (state = {}, action) => {
 	switch (action.type) {
-		case "SET_CURRENT_CHAT":
+		case "SET_CURRENT_USER":
 			return {
-				isChatting: !!action.roomId.length,
-				roomId: action.roomId
+				isAuthenticated: !!Object.keys(action.user).length,
+				user: action.user
 			}
 		default:
 			return state

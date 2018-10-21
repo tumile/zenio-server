@@ -5,8 +5,8 @@ import "./styles/login.css"
 
 class Login extends Component {
 	state = {
-		name: "",
-		pass: ""
+		username: "",
+		password: ""
 	}
 
 	handleChange = (e) => {
@@ -19,30 +19,42 @@ class Login extends Component {
 
 	handleSubmit = (e) => {
 		e.preventDefault()
+		const { username, password } = this.state
+		this.props
+			.authUser("login", { username, password })
+			.then(() => this.props.history.push("/home"))
+			.catch(() => console.log("Oops error :("))
 	}
 
 	render() {
-		const { name, pass } = this.state
+		const { username, password } = this.state
 
 		return (
 			<section className="form">
 				<form onSubmit={this.handleSubmit}>
+					{this.props.errors.map((message, i) => (
+						<p key={i} className="error">
+							{message}
+						</p>
+					))}
 					<input
-						name="name"
-						vlaue={name}
+						name="username"
+						vlaue={username}
 						type="text"
 						placeholder="Username"
 						onChange={this.handleChange}
+						autoComplete="off"
 					/>
 					<input
-						name="pass"
-						value={pass}
+						name="password"
+						value={password}
 						type="password"
 						placeholder="Password"
 						onChange={this.handleChange}
+						autoComplete="off"
 					/>
 					<button>login</button>
-					<p className="message">
+					<p className="prompt">
 						Not registered?{" "}
 						<span className="link" onClick={this.handleToggleForm}>
 							<strong>Create an account</strong>
