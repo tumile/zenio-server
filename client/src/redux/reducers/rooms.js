@@ -1,7 +1,8 @@
 export default (state = [], action) => {
 	switch (action.type) {
 		case "LOAD_ROOMS":
-			return action.rooms
+			if (!action.rooms || action.rooms.length === 0) return []
+			return [...action.rooms]
 		case "ADD_ROOM":
 			return [...state, action.room]
 		default:

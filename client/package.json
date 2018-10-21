@@ -5,6 +5,7 @@
   "dependencies": {
     "animejs": "^2.2.0",
     "axios": "^0.18.0",
+    "firebase": "^5.5.5",
     "jwt-decode": "^2.2.0",
     "react": "^16.5.2",
     "react-animations": "^1.0.0",

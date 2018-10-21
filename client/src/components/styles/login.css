@@ -15,6 +15,18 @@
 	font-weight: bold;
 	margin-bottom: 20px;
 }
+.form input.inputFile {
+	background-size: cover;
+	background-position: center;
+	background-repeat: no-repeat;
+	border-radius: 50%;
+	box-sizing: border-box;
+	width: 100%;
+	padding: 150px 0 0 0;
+	height: 150px;
+	width: 150px;
+	overflow: hidden;
+}
 .form input {
 	border-radius: 5px;
 	outline: 0;

@@ -9,18 +9,19 @@ import { loadRooms } from "../redux/actions/rooms"
 
 class Home extends Component {
 	componentDidMount() {
-		if (this.props.currentUser.user) {
-			const { userId } = this.props.currentUser.user
-			loadRooms(userId)
+		const { isAuthenticated, user, loadRooms } = this.props
+		if (isAuthenticated) {
+			const { userId } = user
+			loadRooms(userId).catch((error) => console.log(error))
 		}
 	}
 
 	render() {
-		const { isChatting, roomId } = this.props.currentRoom
+		const { isChatting, roomId, rooms } = this.props
 		return (
 			<main className="main">
 				<aside className="people">
-					{this.props.rooms.map(({ roomId }, i) => (
+					{rooms.map(({ roomId }, i) => (
 						<RoomItem
 							setCurrentRoom={() => setCurrentRoom(roomId)}
 							key={roomId}
@@ -37,9 +38,15 @@ class Home extends Component {
 	}
 }
 
-const mapStateToProps = ({ currentRoom, currentUser, rooms }) => ({
-	currentRoom,
-	currentUser,
+const mapStateToProps = ({
+	currentRoom: { isChatting, roomId },
+	currentUser: { isAuthenticated, user },
+	rooms
+}) => ({
+	isChatting,
+	roomId,
+	isAuthenticated,
+	user,
 	rooms
 })
 

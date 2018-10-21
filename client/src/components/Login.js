@@ -28,15 +28,16 @@ class Login extends Component {
 
 	render() {
 		const { username, password } = this.state
-
+		const { errors } = this.props
 		return (
 			<section className="form">
 				<form onSubmit={this.handleSubmit}>
-					{this.props.errors.map((message, i) => (
-						<p key={i} className="error">
-							{message}
-						</p>
-					))}
+					{errors.length > 0 &&
+						this.props.errors.map((message, i) => (
+							<p key={i} className="error">
+								{message}
+							</p>
+						))}
 					<input
 						name="username"
 						vlaue={username}
