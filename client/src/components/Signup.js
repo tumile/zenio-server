@@ -17,6 +17,7 @@ class Signup extends Component {
 	}
 
 	handleToggleForm = () => {
+		this.props.removeError()
 		this.props.history.push("/login")
 	}
 

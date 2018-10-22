@@ -1,6 +1,9 @@
 import "./styles/placeholder.css"
 import React, { Component } from "react"
+import { connect } from "react-redux"
 import apiCall from "../api"
+import PeopleItem from "./PeopleItem"
+import { createRoom } from "../redux/actions/rooms"
 
 class Placeholder extends Component {
 	state = {
@@ -19,8 +22,6 @@ class Placeholder extends Component {
 						apiCall
 							.post("/user/find", { username: this.state.username })
 							.then(({ data: { users } }) => {
-								console.log(users)
-
 								this.setState((prev) => ({
 									...prev,
 									searching: false,
@@ -55,10 +56,26 @@ class Placeholder extends Component {
 				) : (
 					<h3>Start a chat with your friend!</h3>
 				)}
-				{results.length > 0 && results.map((user) => <h3>{user.username}</h3>)}
+				{results.length > 0 &&
+					results.map((user) => (
+						<PeopleItem
+							key={user._id}
+							{...user}
+							createRoom={() =>
+								this.props.createRoom(this.props.userId, user._id)
+							}
+						/>
+					))}
 			</div>
 		)
 	}
 }
 
-export default Placeholder
+export default connect(
+	({
+		currentUser: {
+			user: { userId }
+		}
+	}) => ({ userId }),
+	{ createRoom }
+)(Placeholder)

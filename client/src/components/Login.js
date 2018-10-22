@@ -1,6 +1,7 @@
 import React, { Component } from "react"
 import { connect } from "react-redux"
 import { authUser } from "../redux/actions/auth"
+import { removeError } from "../redux/actions/errors"
 import "./styles/login.css"
 
 class Login extends Component {
@@ -14,6 +15,7 @@ class Login extends Component {
 	}
 
 	handleToggleForm = () => {
+		this.props.removeError()
 		this.props.history.push("/signup")
 	}
 
@@ -67,7 +69,14 @@ class Login extends Component {
 	}
 }
 
+function mapDispatchToProps(dispatch) {
+	return {
+		removeError: () => dispatch(removeError()),
+		authUser: (type, data) => dispatch(authUser(type, data))
+	}
+}
+
 export default connect(
 	({ errors }) => ({ errors }),
-	{ authUser }
+	mapDispatchToProps
 )(Login)

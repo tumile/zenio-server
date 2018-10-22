@@ -10,7 +10,7 @@ const cors = require("cors")
 const jwt = require("jsonwebtoken")
 
 app.use(bodyParser.json())
-app.use(cors())
+app.use(cors({ origin: true }))
 
 module.exports = {
 	express,

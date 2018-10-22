@@ -9,8 +9,9 @@
 }
 
 .people {
-	flex-grow: 0.4;
+	flex-grow: 0.1;
 	padding: 10px;
+	min-width: 50px;
 }
 
 .chat {

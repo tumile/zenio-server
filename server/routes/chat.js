@@ -8,8 +8,7 @@ io.on("connection", (socket) => {
 		try {
 			const token = packet.handshake.query.token
 			const payload = await jwt.verify(token, process.env.SECRET_KEY)
-			const user = await db.User.findById(payload.userId)
-			const { username } = user
+			const { username } = payload
 			socket.username = username
 			next()
 		} catch (error) {

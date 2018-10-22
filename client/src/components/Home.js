@@ -21,12 +21,11 @@ class Home extends Component {
 		return (
 			<main className="main">
 				<aside className="people">
-					{rooms.map(({ roomId }, i) => (
+					{rooms.map(({ _id, members }) => (
 						<RoomItem
-							setCurrentRoom={() => setCurrentRoom(roomId)}
-							key={roomId}
-							name={`Awesome room no.${i + 1}`}
-							lastestMess="Hey whats up"
+							setCurrentRoom={() => this.props.setCurrentRoom(_id)}
+							key={_id}
+							members={members.filter((m) => m._id !== this.props.user.userId)}
 						/>
 					))}
 				</aside>
@@ -52,5 +51,5 @@ const mapStateToProps = ({
 
 export default connect(
 	mapStateToProps,
-	{ loadRooms }
+	{ loadRooms, setCurrentRoom }
 )(Home)

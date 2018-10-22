@@ -7,7 +7,7 @@ router.post("/login", async (req, res, next) => {
 		let user = await db.User.findOne({
 			username: req.body.username
 		})
-		let { _id, username } = user
+		let { _id, username, avatar } = user
 		let isMatch = await user.comparePassword(req.body.password)
 		if (isMatch) {
 			let token = await jwt.sign(
@@ -19,7 +19,8 @@ router.post("/login", async (req, res, next) => {
 			res.status(200).json({
 				userId: _id,
 				username,
-				token
+				token,
+				avatar
 			})
 		} else {
 			next({
@@ -37,8 +38,13 @@ router.post("/login", async (req, res, next) => {
 
 router.post("/signup", async (req, res, next) => {
 	try {
-		let user = await db.User.create(req.body)
-		let { _id, username } = user
+		let user = await db.User.create({
+			...req.body,
+			avatar:
+				req.body.avatar ||
+				"https://cdn1.iconfinder.com/data/icons/user-pictures/100/unknown-512.png"
+		})
+		let { _id, username, avatar } = user
 		let token = await jwt.sign(
 			{
 				userId: _id
@@ -48,7 +54,8 @@ router.post("/signup", async (req, res, next) => {
 		res.status(201).json({
 			userId: _id,
 			username,
-			token
+			token,
+			avatar
 		})
 	} catch (error) {
 		if (error.code === 11000) {
