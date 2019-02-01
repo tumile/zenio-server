@@ -1,18 +1,24 @@
 const jwt = require("jsonwebtoken")
 const User = require("../models/User")
+const crypto = require("crypto")
 
 exports.restAuthorize = async (req, res, next) => {
     try {
         const token = req.headers.authorization.split(" ")[1]
-        const payload = await jwt.verify(token, process.env.SECRET)
+        const payload = await jwt.verify(token, process.env.SECRET_KEY)
         const { userId } = payload
-        if (req.params.userId && userId !== req.params.userId) throw Error()
+        if (
+            (req.params.userId && req.params.userId !== userId) ||
+            (req.params.roomId && !(await User.isMember(userId, roomId)))
+        )
+            throw new Error("Trying to access unauthorized route")
         req.userId = userId
         next()
     } catch (error) {
         next({
             status: 401,
-            type: "UNAUTHORIZED"
+            type: "UNAUTHORIZED",
+            message: error.message
         })
     }
 }
@@ -20,12 +26,15 @@ exports.restAuthorize = async (req, res, next) => {
 exports.socketAuthorize = async (socket, next) => {
     try {
         const token = socket.handshake.query.token
-        const payload = await jwt.verify(token, process.env.SECRET)
+        const payload = await jwt.verify(token, process.env.SECRET_KEY)
         const { userId } = payload
         socket.userId = userId
         next()
     } catch (error) {
-        socket.emit("UNAUTHORIZED")
+        socket.emit("ERROR", {
+            type: "UNAUTHORIZED",
+            message: error.message
+        })
     }
 }
 
@@ -43,62 +52,62 @@ exports.login = async (req, res, next) => {
         if (!isMatch)
             return next({
                 status: 400,
-                type: "INVALID_PASSWORD"
+                type: "WRONG_PASSWORD"
             })
-        const { _id: userId, firstName, lastName, avatar } = user
+        const { _id: userId, givenName, familyName, photo } = user
         const token = await jwt.sign(
             {
-                userId,
-                firstName,
-                lastName,
-                avatar
+                userId
             },
-            process.env.SECRET
+            process.env.SECRET_KEY
         )
         res.status(200).json({
             userId,
-            firstName,
-            lastName,
-            avatar,
+            givenName,
+            familyName,
+            photo,
             token
         })
     } catch (error) {
         next({
             status: 500,
-            type: "DATABASE_ERROR"
+            type: "DATABASE_ERROR",
+            message: error.message
         })
     }
 }
 
 exports.signup = async (req, res, next) => {
     try {
+        if (!req.body.photo)
+            req.body.photo = `https://robohash.org/${crypto
+                .randomBytes(10)
+                .toString("hex")}.jpg?size=100x100&set=set3`
         const user = await User.create(req.body)
-        const { _id: userId, firstName, lastName, avatar } = user
+        const { _id: userId, givenName, familyName, photo } = user
         const token = await jwt.sign(
             {
-                userId,
-                firstName,
-                lastName,
-                avatar
+                userId
             },
-            process.env.SECRET
+            process.env.SECRET_KEY
         )
         res.status(200).json({
             userId,
-            firstName,
-            lastName,
-            avatar,
+            givenName,
+            familyName,
+            photo,
             token
         })
     } catch (error) {
         if (error.code === 11000)
             return next({
                 status: 400,
-                type: "EMAIL_TAKEN"
+                type: "EMAIL_USED"
             })
         next({
             status: 500,
-            type: "DATABASE_ERROR"
+            type: "DATABASE_ERROR",
+            message: error.message
         })
     }
 }
