@@ -1,6 +1,8 @@
 const Room = require("../models/Room")
 const User = require("../models/User")
 
+const PAGE_LIMIT = 15
+
 exports.getAllRooms = async (req, res, next) => {
     try {
         const user = await User.findById(req.params.userId)
