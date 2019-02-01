@@ -5,11 +5,11 @@ const crypto = require("crypto")
 exports.restAuthorize = async (req, res, next) => {
     try {
         const token = req.headers.authorization.split(" ")[1]
-        const payload = await jwt.verify(token, process.env.SECRET_KEY)
+        const payload = jwt.verify(token, process.env.SECRET_KEY)
         const { userId } = payload
         if (
             (req.params.userId && req.params.userId !== userId) ||
-            (req.params.roomId && !(await User.isMember(userId, roomId)))
+            (req.params.roomId && !(await User.hasRoom(userId, roomId)))
         )
             throw new Error("Trying to access unauthorized route")
         req.userId = userId
@@ -26,7 +26,7 @@ exports.restAuthorize = async (req, res, next) => {
 exports.socketAuthorize = async (socket, next) => {
     try {
         const token = socket.handshake.query.token
-        const payload = await jwt.verify(token, process.env.SECRET_KEY)
+        const payload = jwt.verify(token, process.env.SECRET_KEY)
         const { userId } = payload
         socket.userId = userId
         next()
@@ -40,9 +40,12 @@ exports.socketAuthorize = async (socket, next) => {
 
 exports.login = async (req, res, next) => {
     try {
-        const user = await User.findOne({
-            email: req.body.email
-        })
+        const user = await User.findOne(
+            {
+                email: req.body.email
+            },
+            "givenName familyName photo password"
+        )
         if (!user)
             return next({
                 status: 400,
@@ -55,7 +58,7 @@ exports.login = async (req, res, next) => {
                 type: "WRONG_PASSWORD"
             })
         const { _id: userId, givenName, familyName, photo } = user
-        const token = await jwt.sign(
+        const token = jwt.sign(
             {
                 userId
             },
@@ -70,8 +73,6 @@ exports.login = async (req, res, next) => {
         })
     } catch (error) {
         next({
-            status: 500,
-            type: "DATABASE_ERROR",
             message: error.message
         })
     }
@@ -81,11 +82,11 @@ exports.signup = async (req, res, next) => {
     try {
         if (!req.body.photo)
             req.body.photo = `https://robohash.org/${crypto
-                .randomBytes(10)
+                .randomBytes(5)
                 .toString("hex")}.jpg?size=100x100&set=set3`
         const user = await User.create(req.body)
         const { _id: userId, givenName, familyName, photo } = user
-        const token = await jwt.sign(
+        const token = jwt.sign(
             {
                 userId
             },
@@ -105,8 +106,6 @@ exports.signup = async (req, res, next) => {
                 type: "EMAIL_USED"
             })
         next({
-            status: 500,
-            type: "DATABASE_ERROR",
             message: error.message
         })
     }

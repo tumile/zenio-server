@@ -34,7 +34,7 @@ const userSchema = new mongoose.Schema({
 userSchema.pre("save", async function(next) {
     try {
         if (!this.isModified("password")) return next()
-        let hashedPassword = await bcrypt.hash(this.password, 10)
+        let hashedPassword = await bcrypt.hash(this.password, 12)
         this.password = hashedPassword
         next()
     } catch (error) {
@@ -51,7 +51,7 @@ userSchema.methods.comparePassword = async function(candidatePassword, next) {
     }
 }
 
-userSchema.statics.isMember = async function(userId, roomId, next) {
+userSchema.statics.hasRoom = async function(userId, roomId, next) {
     try {
         const user = await this.findById(userId)
         return user.rooms.includes(roomId)

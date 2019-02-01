@@ -16,7 +16,7 @@ const connect = io => {
                 })
                 const populateTask = Room.populate(tempRoom, {
                     path: "members",
-                    select: "firstName lastName avatar"
+                    select: "givenName familyName photo"
                 })
                 const updateTasks = members.map(id =>
                     User.findByIdAndUpdate(
@@ -32,9 +32,8 @@ const connect = io => {
                     ...updateTasks
                 ])
                 members.map(id => io.to(id).emit("NEW_ROOM", room))
-                callback(null) // null means no error occurred
+                callback(null)
             } catch (error) {
-                console.log(error)
                 callback({
                     status: 500,
                     type: "DATABASE_ERROR",
@@ -43,12 +42,12 @@ const connect = io => {
             }
         })
 
-        socket.on("NEW_MESSAGE", async ({ roomId, content }, callback) => {
+        socket.on("NEW_MESSAGE", async ({ roomId, msg }, callback) => {
             try {
                 const [message, room] = await Promise.all([
                     Message.create({
-                        content,
-                        author: socket.userId
+                        msg,
+                        from: socket.userId
                     }),
                     Room.findById(roomId)
                 ])
@@ -59,7 +58,6 @@ const connect = io => {
                 await room.save()
                 callback(null)
             } catch (error) {
-                console.log(error)
                 callback({
                     status: 500,
                     type: "DATABASE_ERROR",

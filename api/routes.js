@@ -6,15 +6,20 @@ const UserHandler = require("../handlers/UserHandler")
 router
     .post("/auth/login", AuthHandler.login)
     .post("/auth/signup", AuthHandler.signup)
-
-router
-    .use("/rooms", AuthHandler.restAuthorize)
-    .get("/", RoomHandler.getAllRooms)
-    .get("/:roomId", RoomHandler.getSingleRoom)
-    .get("/:roomId/messages", RoomHandler.getMessagesInRoom)
-
-router
-    .use("/users", AuthHandler.restAuthorize)
-    .post("/find", UserHandler.findUser)
-
+    .post("/users/find", AuthHandler.restAuthorize, UserHandler.findUsers)
+    .get(
+        "/users/:userId/rooms",
+        AuthHandler.restAuthorize,
+        RoomHandler.getAllRooms
+    )
+    .get(
+        "/users/:userId/rooms/:roomId",
+        AuthHandler.restAuthorize,
+        RoomHandler.getSingleRoom
+    )
+    .get(
+        "/users/:userId/rooms/:roomId/messages",
+        AuthHandler.restAuthorize,
+        RoomHandler.getMessagesInRoom
+    )
 module.exports = router

@@ -12,7 +12,7 @@ exports.getAllRooms = async (req, res, next) => {
             .limit(PAGE_LIMIT)
             .populate({
                 path: "members",
-                select: "firstName lastName avatar"
+                select: "givenName familyName photo"
             })
             .populate({
                 path: "messages",
@@ -27,8 +27,6 @@ exports.getAllRooms = async (req, res, next) => {
         })
     } catch (error) {
         next({
-            status: 500,
-            type: "DATABASE_ERROR",
             message: error.message
         })
     }
@@ -39,7 +37,7 @@ exports.getSingleRoom = async (req, res, next) => {
         const room = await Room.findById(req.params.roomId)
             .populate({
                 path: "members",
-                select: "firstName lastName avatar"
+                select: "givenName familyName photo"
             })
             .populate({
                 path: "messages",
@@ -51,8 +49,6 @@ exports.getSingleRoom = async (req, res, next) => {
         res.status(200).json({ room })
     } catch (error) {
         next({
-            status: 500,
-            type: "DATABASE_ERROR",
             message: error.message
         })
     }
@@ -77,8 +73,6 @@ exports.getMessagesInRoom = async (req, res, next) => {
         })
     } catch (error) {
         next({
-            status: 500,
-            type: "DATABASE_ERROR",
             message: error.message
         })
     }

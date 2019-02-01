@@ -21,7 +21,7 @@ app.use(compression())
 app.use(bodyParser.json())
 app.use("/", routes)
 app.use((error, req, res, next) => {
-    const { status, type, message } = error
+    const { status = 500, type = "INTERNAL_ERROR", message } = error
     res.status(status).json({
         error: {
             type,
