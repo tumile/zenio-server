@@ -51,4 +51,13 @@ userSchema.methods.comparePassword = async function(candidatePassword, next) {
     }
 }
 
+userSchema.statics.isMember = async function(userId, roomId, next) {
+    try {
+        const user = await this.findById(userId)
+        return user.rooms.includes(roomId)
+    } catch (error) {
+        next(error)
+    }
+}
+
 module.exports = mongoose.model("User", userSchema)
