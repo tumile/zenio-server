@@ -1,4 +1,5 @@
 const jwt = require("jsonwebtoken")
+const User = require("../models/User")
 
 exports.restAuthorize = async (req, res, next) => {
     try {
@@ -30,7 +31,7 @@ exports.socketAuthorize = async (socket, next) => {
 
 exports.login = async (req, res, next) => {
     try {
-        const user = await db.User.findOne({
+        const user = await User.findOne({
             email: req.body.email
         })
         if (!user)
@@ -71,7 +72,7 @@ exports.login = async (req, res, next) => {
 
 exports.signup = async (req, res, next) => {
     try {
-        const user = await db.User.create(req.body)
+        const user = await User.create(req.body)
         const { _id: userId, firstName, lastName, avatar } = user
         const token = await jwt.sign(
             {
