@@ -42,6 +42,30 @@ const connect = io => {
             }
         })
 
+        socket.on("NEW_MESSAGE", async ({ roomId, content }, callback) => {
+            try {
+                const [message, room] = await Promise.all([
+                    Message.create({
+                        content,
+                        author: socket.userId
+                    }),
+                    Room.findById(roomId)
+                ])
+                room.messages.push(message._id)
+                room.members.map(id =>
+                    io.to(id).emit("NEW_MESSAGE", { roomId, message })
+                )
+                await room.save()
+                callback(null)
+            } catch (error) {
+                console.log(error)
+                callback({
+                    status: 500,
+                    type: "DATABASE_ERROR"
+                })
+            }
+        })
+
         // TODO: offline support / push notification
         socket.on("disconnect", () => {})
     })
