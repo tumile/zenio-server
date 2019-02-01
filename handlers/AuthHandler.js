@@ -27,3 +27,77 @@ exports.socketAuthorize = async (socket, next) => {
         socket.emit("UNAUTHORIZED")
     }
 }
+
+exports.login = async (req, res, next) => {
+    try {
+        const user = await db.User.findOne({
+            email: req.body.email
+        })
+        if (!user)
+            return next({
+                status: 400,
+                type: "EMAIL_NOT_FOUND"
+            })
+        const isMatch = await user.comparePassword(req.body.password)
+        if (!isMatch)
+            return next({
+                status: 400,
+                type: "INVALID_PASSWORD"
+            })
+        const { _id: userId, firstName, lastName, avatar } = user
+        const token = await jwt.sign(
+            {
+                userId,
+                firstName,
+                lastName,
+                avatar
+            },
+            process.env.SECRET
+        )
+        res.status(200).json({
+            userId,
+            firstName,
+            lastName,
+            avatar,
+            token
+        })
+    } catch (error) {
+        next({
+            status: 500,
+            type: "DATABASE_ERROR"
+        })
+    }
+}
+
+exports.signup = async (req, res, next) => {
+    try {
+        const user = await db.User.create(req.body)
+        const { _id: userId, firstName, lastName, avatar } = user
+        const token = await jwt.sign(
+            {
+                userId,
+                firstName,
+                lastName,
+                avatar
+            },
+            process.env.SECRET
+        )
+        res.status(200).json({
+            userId,
+            firstName,
+            lastName,
+            avatar,
+            token
+        })
+    } catch (error) {
+        if (error.code === 11000)
+            return next({
+                status: 400,
+                type: "EMAIL_TAKEN"
+            })
+        next({
+            status: 500,
+            type: "DATABASE_ERROR"
+        })
+    }
+}
