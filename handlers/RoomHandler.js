@@ -3,8 +3,8 @@ const User = require("../models/User")
 
 exports.getAllRooms = async (req, res, next) => {
     try {
-        const user = await db.User.findById(req.params.userId)
-        const rooms = await db.Room.find({ _id: { $in: user.rooms } })
+        const user = await User.findById(req.params.userId)
+        const rooms = await Room.find({ _id: { $in: user.rooms } })
             .sort({ updatedAt: -1 })
             .skip(parseInt(req.query.skip))
             .limit(PAGE_LIMIT)
@@ -31,9 +31,32 @@ exports.getAllRooms = async (req, res, next) => {
     }
 }
 
+exports.getSingleRoom = async (req, res, next) => {
+    try {
+        const room = await Room.findById(req.params.roomId)
+            .populate({
+                path: "members",
+                select: "firstName lastName avatar"
+            })
+            .populate({
+                path: "messages",
+                options: {
+                    sort: { createdAt: -1 },
+                    limit: PAGE_LIMIT
+                }
+            })
+        res.status(200).json({ room })
+    } catch (error) {
+        next({
+            status: 500,
+            type: "DATABASE_ERROR"
+        })
+    }
+}
+
 exports.getMessagesInRoom = async (req, res, next) => {
     try {
-        const room = await db.Room.findById(
+        const room = await Room.findById(
             req.params.roomId,
             "messages"
         ).populate({
