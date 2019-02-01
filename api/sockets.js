@@ -4,7 +4,7 @@ const Message = require("../models/Message")
 const User = require("../models/User")
 
 const connect = io => {
-    io.use(AuthHandler.onsocketAuthorize)
+    io.use(AuthHandler.socketAuthorize)
 
     io.on("connection", socket => {
         socket.join(socket.userId)
@@ -37,7 +37,8 @@ const connect = io => {
                 console.log(error)
                 callback({
                     status: 500,
-                    type: "DATABASE_ERROR"
+                    type: "DATABASE_ERROR",
+                    message: error.message
                 })
             }
         })
@@ -61,7 +62,8 @@ const connect = io => {
                 console.log(error)
                 callback({
                     status: 500,
-                    type: "DATABASE_ERROR"
+                    type: "DATABASE_ERROR",
+                    message: error.message
                 })
             }
         })

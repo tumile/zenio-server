@@ -28,7 +28,8 @@ exports.getAllRooms = async (req, res, next) => {
     } catch (error) {
         next({
             status: 500,
-            type: "DATABASE_ERROR"
+            type: "DATABASE_ERROR",
+            message: error.message
         })
     }
 }
@@ -51,7 +52,8 @@ exports.getSingleRoom = async (req, res, next) => {
     } catch (error) {
         next({
             status: 500,
-            type: "DATABASE_ERROR"
+            type: "DATABASE_ERROR",
+            message: error.message
         })
     }
 }
@@ -76,7 +78,8 @@ exports.getMessagesInRoom = async (req, res, next) => {
     } catch (error) {
         next({
             status: 500,
-            type: "DATABASE_ERROR"
+            type: "DATABASE_ERROR",
+            message: error.message
         })
     }
 }
