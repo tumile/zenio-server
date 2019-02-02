@@ -35,8 +35,7 @@ const connect = io => {
                 callback(null)
             } catch (error) {
                 callback({
-                    status: 500,
-                    type: "DATABASE_ERROR",
+                    type: "INTERNAL_ERROR",
                     message: error.message
                 })
             }
@@ -59,8 +58,7 @@ const connect = io => {
                 callback(null)
             } catch (error) {
                 callback({
-                    status: 500,
-                    type: "DATABASE_ERROR",
+                    type: "INTERNAL_ERROR",
                     message: error.message
                 })
             }
